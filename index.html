@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Demystifying Emergent Exploration in Goal-Conditioned RL</title>
+  <meta name="description" content="Project page for Demystifying Emergent Exploration in Goal-Conditioned RL." />
+  <style>
+    .left-aligned {
+    text-align: left;
+  }
+  .right-aligned {
+      text-align: right;
+  }
+  .centered {
+      text-align: center;
+  }
+  .justified {
+      text-align: justify;
+  }
+
+  .card-figure {
+  margin: 16px 0 0;
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+}
+
+.card-figure img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  box-shadow: 0 6px 18px rgba(22, 28, 37, 0.06);
+  display: inline-block;
+}
+
+/* caption styling */
+.card-figure figcaption {
+  margin-top: 8px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #666;
+  font-style: normal; /* change to italic if you prefer */
+}
+    :root { --w: 1200px; --sans: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+    body { margin: 0; padding-top: 30px; font-family: var(--sans); line-height: 1.55; }
+    header { margin-top: 100px;  padding: 20px 10px 10px; text-align: center; }
+    .wrap { max-width: var(--w); margin: 0 auto; padding: 20px 10px; }
+    h1 { font-size: 32px; margin: 0 0 4px; }
+    .authors a { text-decoration: none; }
+    .affils { color: #555; font-size: 14px; margin-top: 4px; }
+    .buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 18px 0 0; }
+    .btn { border: 1px solid #ddd; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
+    .hero { margin: 24px auto; }
+    .hero img, .hero video { width: 100%; border-radius: 10px; border: 1px solid #eee; }
+    h2 { margin: 28px 0 8px; }
+     /* Add to your <style> block (or paste above this section) */
+
+  /* grid: two equal columns, row stretches to tallest child */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: stretch; /* IMPORTANT: makes both columns match height */
+  }
+
+  /* left text card (unchanged except flex column) */
+  .card {
+    background: #ffffff;
+    padding: 20px 22px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 8px 24px rgba(22, 28, 37, 0.04);
+    display: flex;
+    flex-direction: column; /* enables bottom growth/pushing */
+    gap: 12px;
+  }
+  .card p.justified { margin: 0; }
+
+  /* right column is a flex column so we can control vertical layout */
+  .video-col {
+    display: flex;
+    flex-direction: column;
+    /* don't vertically center the whole column — we'll center the video wrapper */
+    /* justify-content: center; */
+    align-items: center;
+    gap: 16px;
+  }
+
+  /* wrapper for the video (centers horizontally, sits toward top) */
+  .video-wrapper {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* optional: keep the video visually separated */
+  }
+  .video-wrapper video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    display: block;
+    object-fit: cover;
+  }
+
+  /* bottom "card" under video that will be pushed to the bottom of the column */
+  .video-card-bottom {
+    margin-top: auto;              /* pushes this card to the bottom of the column */
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    padding: 18px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.06);
+    box-shadow: 0 8px 20px rgba(22,28,37,0.04);
+    color: #333;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Full-width text card (above the media row) */
+.full-text-card {
+  max-width: var(--w);
+  margin: 0 auto 20px;
+  background: #fff;
+  padding: 18px 22px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 8px 24px rgba(22,28,37,0.04);
+}
+.full-text-card p { margin: 0; line-height: 1.6; }
+
+/* Media row: two equal columns but avoid overflow */
+.media-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  max-width: var(--w);
+  margin: 0 auto 30px;
+  align-items: start;
+}
+
+/* each column holds a 'card' for consistent visuals */
+.media-col { min-width: 0; } /* prevents overflow issues */
+.media-card {
+  background: #fff;
+  padding: 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 18px rgba(22,28,37,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  min-height: 600px;  
+  justify-content: center;   /* centers content vertically */
+  align-items: center;
+}
+
+/* media elements */
+.media-card video,
+.media-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  object-fit: cover;
+}
+
+/* captions */
+.media-caption {
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+  margin-top: 4px;
+}
+
+
+
+/* Responsive: stack on small screens */
+@media (max-width: 800px) {
+  .media-row { grid-template-columns: 1fr; }
+  .full-text-card { padding: 16px; }
+}
+
+
+    .codebox { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background: #f7f7f7; border: 1px solid #eee; border-radius: 8px; padding: 12px; overflow:auto; }
+    footer { color:#777; font-size: 13px; text-align:center; padding:30px 16px 60px; }
+    details { background:#fafafa; border:1px solid #eee; border-radius:8px; padding:10px 12px; }
+    summary { cursor:pointer; font-weight:600; }
+  </style>
+</head>
+<body>
+
+<header class="wrap">
+  <h1>Demystifying Emergent Exploration in Goal-Conditioned RL</h1>
+  <div class="authors">
+    <a href="#">Mahsa Bastankhah</a><sup>1★</sup>, 
+    <a href="#">Grace Liu</a><sup>2★</sup>, 
+    <a href="#">Dilip Arumugam</a><sup>1</sup>,
+    <a href="#">Thomas L. Griffiths</a><sup>1</sup>,
+    <a href="#">Benjamin Eysenbach</a><sup>1</sup>
+  </div>
+  <div class="affils">
+    <sup>1</sup> Princeton University &nbsp;&nbsp;
+    <sup>2</sup> Carnegie Mellon University  
+    <br><sup>★</sup> Equal contribution
+  </div>
+  
+  <div class="buttons">
+    <a class="btn" href="paper.pdf">📄 Paper (PDF)</a>
+    <a class="btn" href="https://arxiv.org/abs/XXXX.XXXXX">🧮 arXiv</a>
+    <a class="btn" href="https://github.com/<you>/<repo>">💻 Code</a>
+    <a class="btn" href="#bibtex">📚 BibTeX</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+
+  <h2>Abstract</h2>
+  <p class="justified">
+    In this work, we take a first step toward elucidating the mechanisms behind emergent exploration in unsupervised reinforcement learning.  We study Single-Goal Contrastive Reinforcement Learning (SGCRL) <a href="https://openreview.net/pdf?id=xCkgX4Xfu0" class="cite" target="_blank">(Liu et al., 2025)</a>
+, a self-supervised algorithm capable of solving challenging long-horizon goal-reaching tasks without external rewards or curricula. We combine theoretical analysis of the algorithm's objective function with controlled experiments to understand what drives its exploration.
+    We show that SGCRL maximizes implicit rewards shaped by its learned representations. These representations automatically modify the reward landscape to promote exploration before reaching the goal and exploitation thereafter. Our experiments also demonstrate that these exploration dynamics arise from learning low-rank representations of the state space rather than from neural network function approximation. Our improved understanding enables us to adapt SGCRL to perform safety-aware exploration.
+  </p>
+
+
+<h2>Contrastive representations are essential for exploration!</h2>
+
+<!-- Full-width intro text (first) -->
+<div class="full-text-card">
+  <p class="justified">
+    Our main finding is that contrastive representations induce an implicit curriculum: exploration before the goal is reached and exploitation afterward. This follows from how similarity to the goal evolves in representation space (a measure we call <em>goal-similarity</em>). Early in training, states have high goal-similarity, so the agent optimistically explores many regions. As training continues, representations of explored non-goal states drift away, reducing revisit probability; when the goal is found, states along the successful path increase slightly in goal-similarity, enabling exploitation.
+  </p>
+</div>
+
+<!-- Media row: video and plot side-by-side -->
+<div class="media-row">
+  <div class="media-col">
+    <div class="media-card">
+      <video controls>
+        <source src="assets/exploration-unscripted.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <figcaption class="media-caption"><strong>Demo:</strong> Exploration behavior in single-goal contrastive RL.</figcaption>
+    </div>
+  </div>
+
+  <div class="media-col">
+    <div class="media-card">
+      <img src="assets/success_rate_sgcrl_vs_tabular.png" alt="Success rate over training" />
+      <figcaption class="media-caption">Figure 1. Success rate: Contrastive representations vs. full-rank learning of temporal distances.</figcaption>
+    </div>
+  </div>
+</div>
+
+<h2>Single-goal exploration can solve long-horizon tasks without using neural networks!</h2>
+
+
+
+
+
+
+  <h2 id="bibtex">BibTeX</h2>
+  <details>
+    <summary>Show BibTeX</summary>
+    <pre class="codebox">
+@inproceedings{yourkey2025,
+  title={Your Paper Title},
+  author={Last, First and Last, Second and Last, You},
+  booktitle={Conference Name},
+  year={2025}
+}
+    </pre>
+  </details>
+
+
+<footer>
+  © 2025 Your Name. Feel free to reuse this template; no attribution required.
+</footer>
+
+</body>
+</html>
