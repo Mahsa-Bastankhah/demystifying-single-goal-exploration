@@ -1,10 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Demystifying Emergent Exploration in Goal-Conditioned RL</title>
   <meta name="description" content="Project page for Demystifying Emergent Exploration in Goal-Conditioned RL." />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Demystifying Emergent Exploration in Goal-Conditioned RL" />
+  <meta property="og:description" content="Understanding the mechanisms behind emergent exploration in unsupervised reinforcement learning" />
+  
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Demystifying Emergent Exploration in Goal-Conditioned RL" />
+  <meta name="twitter:description" content="Understanding the mechanisms behind emergent exploration in unsupervised reinforcement learning" />
+  
+  <meta name="keywords" content="reinforcement learning, goal-conditioned RL, contrastive learning, exploration, SGCRL" />
+  
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     .left-aligned {
     text-align: left;
@@ -17,6 +31,12 @@
   }
   .justified {
       text-align: justify;
+      line-height: 1.7;
+  }
+  
+  p {
+    margin: 12px 0;
+    line-height: 1.7;
   }
 
   .card-figure {
@@ -43,18 +63,130 @@
   color: #666;
   font-style: normal; /* change to italic if you prefer */
 }
-    :root { --w: 1200px; --sans: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
-    body { margin: 0; padding-top: 30px; font-family: var(--sans); line-height: 1.55; }
-    header { margin-top: 100px;  padding: 20px 10px 10px; text-align: center; }
-    .wrap { max-width: var(--w); margin: 0 auto; padding: 20px 10px; }
-    h1 { font-size: 32px; margin: 0 0 4px; }
-    .authors a { text-decoration: none; }
-    .affils { color: #555; font-size: 14px; margin-top: 4px; }
-    .buttons { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin: 18px 0 0; }
-    .btn { border: 1px solid #ddd; padding: 10px 14px; border-radius: 8px; text-decoration: none; }
-    .hero { margin: 24px auto; }
-    .hero img, .hero video { width: 100%; border-radius: 10px; border: 1px solid #eee; }
-    h2 { margin: 28px 0 8px; }
+    :root { 
+      --w: 1200px; 
+      --sans: 'Google Sans', 'Noto Sans', -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      --primary-color: #363636;
+      --secondary-color: #4a4a4a;
+      --light-bg: #fafafa;
+      --border-color: #dbdbdb;
+    }
+    
+    body { 
+      margin: 0; 
+      padding: 0; 
+      font-family: var(--sans); 
+      line-height: 1.6; 
+      color: var(--primary-color);
+      background-color: #fff;
+    }
+    
+    header { 
+      margin-top: 60px;  
+      padding: 40px 20px 30px; 
+      text-align: center; 
+      background-color: #fff;
+    }
+    
+    .wrap { 
+      max-width: var(--w); 
+      margin: 0 auto; 
+      padding: 20px 20px; 
+    }
+    
+    h1 { 
+      font-size: 2.5rem; 
+      font-weight: 600;
+      margin: 0 0 20px; 
+      line-height: 1.2;
+      color: var(--primary-color);
+    }
+    
+    .authors { 
+      font-size: 1.1rem;
+      margin: 16px 0;
+      line-height: 1.8;
+    }
+    
+    .authors a { 
+      text-decoration: none; 
+      color: var(--secondary-color);
+      transition: color 0.2s ease;
+    }
+    
+    .authors a:hover {
+      color: #3273dc;
+    }
+    
+    .affils { 
+      color: #777; 
+      font-size: 1rem; 
+      margin-top: 12px; 
+      line-height: 1.8;
+    }
+    
+    .buttons { 
+      display: flex; 
+      gap: 12px; 
+      flex-wrap: wrap; 
+      justify-content: center; 
+      margin: 24px 0 0; 
+    }
+    
+    .btn { 
+      background-color: #fff;
+      border: 1px solid var(--border-color);
+      padding: 10px 20px;
+      border-radius: 6px;
+      text-decoration: none;
+      color: var(--primary-color);
+      font-weight: 500;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .btn:hover {
+      background-color: var(--light-bg);
+      border-color: #b5b5b5;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .hero { 
+      margin: 24px auto; 
+    }
+    
+    .hero img, .hero video { 
+      width: 100%; 
+      border-radius: 10px; 
+      border: 1px solid #eee; 
+    }
+    
+    h2 { 
+      margin: 40px 0 16px;
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    h3 {
+      margin: 24px 0 12px;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+    
+    section {
+      padding: 40px 0;
+    }
+    
+    section.light {
+      background-color: var(--light-bg);
+      margin: 0 -20px;
+      padding: 50px 20px;
+    }
      /* Add to your <style> block (or paste above this section) */
 
   /* grid: two equal columns, row stretches to tallest child */
@@ -68,15 +200,15 @@
   /* left text card (unchanged except flex column) */
   .card {
     background: #ffffff;
-    padding: 20px 22px;
+    padding: 24px 26px;
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 8px 24px rgba(22, 28, 37, 0.04);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(22, 28, 37, 0.05);
     display: flex;
     flex-direction: column; /* enables bottom growth/pushing */
     gap: 12px;
   }
-  .card p.justified { margin: 0; }
+  .card p.justified { margin: 0; line-height: 1.7; }
 
   /* right column is a flex column so we can control vertical layout */
   .video-col {
@@ -112,26 +244,26 @@
     width: 100%;
     max-width: 560px;
     background: #fff;
-    padding: 18px;
+    padding: 20px;
     border-radius: 12px;
-    border: 1px solid rgba(0,0,0,0.06);
-    box-shadow: 0 8px 20px rgba(22,28,37,0.04);
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(22,28,37,0.05);
     color: #333;
     font-size: 14px;
-    line-height: 1.5;
+    line-height: 1.7;
   }
 
   /* Full-width text card (above the media row) */
 .full-text-card {
   max-width: var(--w);
-  margin: 0 auto 20px;
+  margin: 0 auto 28px;
   background: #fff;
-  padding: 18px 22px;
+  padding: 24px 28px;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 8px 24px rgba(22,28,37,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 16px rgba(22,28,37,0.05);
 }
-.full-text-card p { margin: 0; line-height: 1.6; }
+.full-text-card p { margin: 0; line-height: 1.7; }
 
 /* Media row: two equal columns but avoid overflow */
 .media-row {
@@ -147,17 +279,21 @@
 .media-col { min-width: 0; } /* prevents overflow issues */
 .media-card {
   background: #fff;
-  padding: 14px;
+  padding: 18px;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.06);
-  box-shadow: 0 6px 18px rgba(22,28,37,0.04);
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(22,28,37,0.06);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
   min-height: 600px;  
   justify-content: center;   /* centers content vertically */
-  align-items: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.media-card:hover {
+  box-shadow: 0 6px 20px rgba(22,28,37,0.1);
 }
 
 /* media elements */
@@ -173,25 +309,103 @@
 
 /* captions */
 .media-caption {
-  font-size: 13px;
-  color: #555;
-  text-align: center;
-  margin-top: 4px;
+  font-size: 0.9rem;
+  color: #666;
+  text-align: left;
+  margin-top: 8px;
+  padding: 0 4px;
+  line-height: 1.5;
 }
 
 
+
+/* Links styling */
+a {
+  color: #3273dc;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: #1d5bbf;
+}
+
+/* Code box styling */
+.codebox { 
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; 
+  background: #f7f7f7; 
+  border: 1px solid #e8e8e8; 
+  border-radius: 8px; 
+  padding: 16px; 
+  overflow: auto;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Footer styling */
+footer { 
+  color: #888; 
+  font-size: 0.9rem; 
+  text-align: center; 
+  padding: 50px 20px 70px; 
+  background-color: var(--light-bg);
+  border-top: 1px solid #e8e8e8;
+  margin-top: 60px;
+}
+
+/* Details/Summary styling */
+details { 
+  background: #f9f9f9; 
+  border: 1px solid #e8e8e8; 
+  border-radius: 8px; 
+  padding: 16px 18px; 
+  margin: 16px 0;
+}
+
+summary { 
+  cursor: pointer; 
+  font-weight: 600; 
+  color: var(--secondary-color);
+  padding: 4px 0;
+}
+
+summary:hover {
+  color: #3273dc;
+}
 
 /* Responsive: stack on small screens */
 @media (max-width: 800px) {
-  .media-row { grid-template-columns: 1fr; }
-  .full-text-card { padding: 16px; }
+  .media-row { 
+    grid-template-columns: 1fr; 
+  }
+  
+  .full-text-card { 
+    padding: 16px; 
+  }
+  
+  .media-card {
+    min-height: auto;
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .wrap {
+    padding: 20px 16px;
+  }
+  
+  header {
+    padding: 30px 16px 20px;
+  }
+  
+  .authors {
+    font-size: 1rem;
+  }
 }
-
-
-    .codebox { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; background: #f7f7f7; border: 1px solid #eee; border-radius: 8px; padding: 12px; overflow:auto; }
-    footer { color:#777; font-size: 13px; text-align:center; padding:30px 16px 60px; }
-    details { background:#fafafa; border:1px solid #eee; border-radius:8px; padding:10px 12px; }
-    summary { cursor:pointer; font-weight:600; }
   </style>
 </head>
 <body>
@@ -219,18 +433,23 @@
   </div>
 </header>
 
-<main class="wrap">
+<main>
 
+<!-- Abstract Section -->
+<section class="light">
+  <div class="wrap">
+    <h2>Abstract</h2>
+    <p class="justified">
+      In this work, we take a first step toward elucidating the mechanisms behind emergent exploration in unsupervised reinforcement learning.  We study Single-Goal Contrastive Reinforcement Learning (SGCRL) <a href="https://openreview.net/pdf?id=xCkgX4Xfu0" class="cite" target="_blank">(Liu et al., 2025)</a>, a self-supervised algorithm capable of solving challenging long-horizon goal-reaching tasks without external rewards or curricula. We combine theoretical analysis of the algorithm's objective function with controlled experiments to understand what drives its exploration.
+      We show that SGCRL maximizes implicit rewards shaped by its learned representations. These representations automatically modify the reward landscape to promote exploration before reaching the goal and exploitation thereafter. Our experiments also demonstrate that these exploration dynamics arise from learning low-rank representations of the state space rather than from neural network function approximation. Our improved understanding enables us to adapt SGCRL to perform safety-aware exploration.
+    </p>
+  </div>
+</section>
 
-  <h2>Abstract</h2>
-  <p class="justified">
-    In this work, we take a first step toward elucidating the mechanisms behind emergent exploration in unsupervised reinforcement learning.  We study Single-Goal Contrastive Reinforcement Learning (SGCRL) <a href="https://openreview.net/pdf?id=xCkgX4Xfu0" class="cite" target="_blank">(Liu et al., 2025)</a>
-, a self-supervised algorithm capable of solving challenging long-horizon goal-reaching tasks without external rewards or curricula. We combine theoretical analysis of the algorithm's objective function with controlled experiments to understand what drives its exploration.
-    We show that SGCRL maximizes implicit rewards shaped by its learned representations. These representations automatically modify the reward landscape to promote exploration before reaching the goal and exploitation thereafter. Our experiments also demonstrate that these exploration dynamics arise from learning low-rank representations of the state space rather than from neural network function approximation. Our improved understanding enables us to adapt SGCRL to perform safety-aware exploration.
-  </p>
-
-
-<h2>Contrastive representations are essential for exploration!</h2>
+<!-- Main Content Section -->
+<section>
+  <div class="wrap">
+    <h2>Contrastive representations are essential for exploration!</h2>
 
 <!-- Full-width intro text (first) -->
 <div class="full-text-card">
@@ -253,35 +472,38 @@
 
   <div class="media-col">
     <div class="media-card">
-      <img src="assets/success_rate_sgcrl_vs_tabular.png" alt="Success rate over training" />
-      <figcaption class="media-caption">Figure 1. Success rate: Contrastive representations vs. full-rank learning of temporal distances.</figcaption>
+      <img src="assets/hanoi3_animation.gif" alt="Hanoi Tower Animation" />
+      <figcaption class="media-caption"><strong>Demo:</strong> Tower of Hanoi animation showing single-goal exploration.</figcaption>
     </div>
   </div>
 </div>
 
-<h2>Single-goal exploration can solve long-horizon tasks without using neural networks!</h2>
+    <h2>Single-goal exploration can solve long-horizon tasks without using neural networks!</h2>
+  </div>
+</section>
 
-
-
-
-
-
-  <h2 id="bibtex">BibTeX</h2>
-  <details>
-    <summary>Show BibTeX</summary>
-    <pre class="codebox">
-@inproceedings{yourkey2025,
+<!-- BibTeX Section -->
+<section>
+  <div class="wrap">
+    <h2 id="bibtex">BibTeX</h2>
+    <details>
+      <summary>Show BibTeX</summary>
+      <pre class="codebox">@inproceedings{yourkey2025,
   title={Your Paper Title},
   author={Last, First and Last, Second and Last, You},
   booktitle={Conference Name},
   year={2025}
-}
-    </pre>
-  </details>
+}</pre>
+    </details>
+  </div>
+</section>
 
+</main>
 
 <footer>
-  © 2025 Your Name. Feel free to reuse this template; no attribution required.
+  <div class="wrap">
+    © 2025 Your Name. Feel free to reuse this template; no attribution required.
+  </div>
 </footer>
 
 </body>

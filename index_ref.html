@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="description" content="Teaching LLMs When to Stop Seeking and Start Acting" />
+    <meta property="og:title" content="CaRT: Counterfactuals and Reasoning for Termination" />
+    <meta property="og:description" content="Teaching LLMs When to Stop Seeking and Start Acting" />
+    <meta property="og:url" content="URL_PLACEHOLDER" />
+    <meta property="og:image" content="static/image/overview.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:title" content="CaRT: Counterfactuals and Reasoning for Termination" />
+    <meta name="twitter:description" content="Teaching LLMs When to Stop Seeking and Start Acting" />
+    <meta name="twitter:image" content="static/image/overview.png" />
+    <meta name="twitter:card" content="static/image/overview.png" />
+    <meta name="keywords" content="CaRT, LLMs, termination, information seeking, medical diagnosis, reasoning" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>CaRT</title>
+    <link rel="icon" type="image/x-icon" href="static/images/icon.png" />
+    <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet" />
+
+    <link rel="stylesheet" href="static/css/bulma.min.css" />
+    <link rel="stylesheet" href="static/css/bulma-carousel.min.css" />
+    <link rel="stylesheet" href="static/css/bulma-slider.min.css" />
+    <link rel="stylesheet" href="static/css/fontawesome.all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css" />
+    <link rel="stylesheet" href="static/css/index.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://documentcloud.adobe.com/view-sdk/main.js"></script>
+    <script defer src="static/js/fontawesome.all.min.js"></script>
+    <script src="static/js/bulma-carousel.min.js"></script>
+    <script src="static/js/bulma-slider.min.js"></script>
+    <script src="static/js/index.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        prefix: 'tw-',
+      };
+    </script>
+  </head>
+  <body>
+    <section class="hero">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h2 class="title is-2 publication-title">
+                Teaching LLMs When to Stop Seeking and Start Acting
+              </h2>
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <a href="https://graliuce.github.io//" target="_blank"
+                    >Grace Liu<sup>*1</sup></a
+                  >
+                  ,
+                </span>
+                <span class="author-block">
+                  <a href="https://cohenqu.github.io/" target="_blank"
+                    >Yuxiao Qu<sup>*1</sup></a
+                  >
+                  ,
+                </span>
+                <span class="author-block">
+                  <a href="https://www.cs.cmu.edu/~schneide/" target="_blank"
+                    >Jeff Schneider<sup>1</sup></a
+                  >
+                  ,
+                </span>
+                <span class="author-block">
+                  <a href="https://www.cs.cmu.edu/~aarti/" target="_blank"
+                    >Aarti Singh<sup>1</sup></a
+                  >
+                  ,
+                </span>
+                <span class="author-block">
+                  <a href="https://aviralkumar2907.github.io/" target="_blank"
+                    >Aviral Kumar<sup>1</sup></a
+                  >
+                  ,
+                </span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block">
+                  <sup>1</sup>Carnegie Mellon University,
+                  <sup>*</sup>Equal Contribution
+                </span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="ai ai-arxiv"></i>
+                      </span>
+                      <span>arXiv</span>
+                    </a>
+                  </span>
+
+                  <span class="link-block">
+                    <a href="#" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon">
+                        <i class="fab fa-github"></i>
+                      </span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teaser -->
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+            <div class="has-text-centered">
+              <div class="text-center" style="display: flex; justify-content: center;">
+                <img src="static/images/cart_teaser.png" alt="CaRT Termination Behavior" class="mx-auto" style="width: 80%;"/>
+              </div>
+            </div>
+          <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-3">
+            <b>A schematic illustration of termination behavior with and without CaRT.</b> While LLMs typically fail to recognize the best points to stop thinking or questioning, our approach CaRT teaches them to correctly identify when they have gathered sufficient information to solve a task, avoiding wasted computation on easy problems and making steady progress on hard problems.
+          </p>    
+        </div>
+      </div>
+    </section>
+
+    <!-- Abstract -->
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>
+                Many tasks require machine learning models to strategically gather relevant information over multiple rounds of interaction before actually acting on a task. Strategic information gathering requires models to know not only how to effectively acquire information, but also when to stop gathering information and make a decision, in order to avoid overthinking or getting derailed when acting. In this paper, we formalize this problem and introduce <b>Counterfactuals and Reasoning for Termination (CaRT)</b>, an approach for teaching LLMs when to stop seeking information. To appropriately learn when to terminate, CaRT fine-tunes LLMs using counterfactual pairs of trajectories, one where termination is appropriate and a minimally modified version of the same trajectory where it is not. It trains the LLM to explain the rationale for the termination decision in either case via verbal reasoning, and imbues this capability into the base LLM via fine-tuning. We instantiate CaRT in two domains: interactive medical diagnosis and math problem solving. In both domains, we find that CaRT improves the efficiency of information gathering and task success rate compared to other fine-tuning methods.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Problem Motivation -->
+    <section class="section" id="motivation">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">The Termination Problem</h2>
+
+            <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-4">
+              <div class="tw-p-6 tw-shadow-lg tw-rounded-2xl tw-max-w-3xl tw-flex-1 tw-min-w-[300px]">
+                <h2 class="tw-text-xl tw-font-semibold tw-text-gray-700 tw-mb-4">Medical Diagnosis</h2>
+                <div class="tw-space-y-4">
+                  <div class="tw-flex tw-items-start">
+                    <div class="tw-bg-blue-100 tw-p-3 tw-rounded-lg tw-max-w-xs">
+                      <p class="tw-text-gray-700">Hi! What symptoms are you facing today?</p>
+                    </div>
+                  </div>
+                  <div class="tw-flex tw-items-start tw-justify-end">
+                    <div class="tw-bg-green-100 tw-p-3 tw-rounded-lg tw-max-w-xl">
+                      <p class="tw-text-gray-700">Chest pain, trouble breathing, nausea, tingling in my arms.</p>
+                    </div>
+                  </div>
+                  <div class="tw-flex tw-items-start">
+                    <div class="tw-bg-blue-100 tw-p-3 tw-rounded-lg tw-max-w-xs">
+                      <p class="tw-text-gray-700">What is your age and sex?</p>
+                    </div>
+                  </div>
+                  <div class="tw-flex tw-items-start tw-justify-end">
+                    <div class="tw-bg-green-100 tw-p-3 tw-rounded-lg tw-max-w-xl">
+                      <p class="tw-text-gray-700">I am a 25-year-old woman.</p>
+                    </div>
+                  </div>
+                  <div class="tw-flex tw-items-start">
+                    <div class="tw-bg-blue-100 tw-p-3 tw-rounded-lg tw-max-w-xs">
+                      <p class="tw-text-gray-700">Have you recently been under stress or experienced anxiety?</p>
+                    </div>
+                  </div>
+                  <div class="tw-flex tw-items-start tw-justify-end">
+                    <div class="tw-bg-green-100 tw-p-3 tw-rounded-lg tw-max-w-xl">
+                      <p class="tw-text-gray-700">I have been feeling very scared and panicked</p>
+                    </div>
+                  </div>
+                  <div class="tw-bg-yellow-100 tw-p-3 tw-rounded-lg">
+                    <p class="tw-text-gray-700 tw-text-sm">Final Diagnosis: Panic Attack</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-3">
+              <b>Simplified example of terminating information gathering in the medical diagnosis domain.</b>
+            </p>
+
+            <div class="content has-text-justified tw-mt-6">
+              <p>
+                Deciding when to stop gathering information is challenging because it requires predicting the expected future utility of continuing under the model's current policy. 
+                We build an approach to imbue LLMs with the ability to stop or ``terminate'' their internal thinking processes and/or environment interaction at the right point for maximal performance, 
+                without wasting computation or interaction. 
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Method -->
+    <section class="section" id="method">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">CaRT: Counterfactuals and Reasoning for Termination</h2>
+            
+            <div class="content has-text-justified">
+              <p>
+                Our approach combines two key components to teach LLMs effective termination behavior:
+              </p>
+            </div>
+
+            <h3 class="title is-4">Component 1: Hard Negative Counterfactuals</h3>
+            <div class="content has-text-justified">
+              <p>
+                For each trajectory where termination is optimal (success rate ≥ 50%), we create a minimally modified counterfactual where termination would be inappropriate (success rate < 30%). This isolates the exact piece of information that differentiates success from failure.
+              </p>
+              <div class="tw-flex tw-flex-wrap tw-justify-center tw-gap-4 tw-mt-6">
+                <!-- Original Version -->
+                <div class="tw-p-6 tw-bg-green-50 tw-shadow-lg tw-rounded-2xl tw-flex-1 tw-min-w-[300px] tw-max-w-md">
+                  <h3 class="tw-text-lg tw-font-semibold tw-text-green-700 tw-mb-4 tw-text-center">Original (Should Terminate)</h3>
+                  <div class="tw-space-y-3">
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">Hi! What symptoms are you facing?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">Chest pain, trouble breathing, nausea, tingling.</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">What is your age and sex?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">I am a 25-year-old woman.</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm tw-font-semibold">Have you been under stress or anxiety?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm tw-font-semibold">I've been feeling very scared and panicked.</p>
+                      </div>
+                    </div>
+                    <div class="tw-bg-green-200 tw-p-2 tw-rounded-lg tw-mt-3">
+                      <p class="tw-text-gray-800 tw-text-xs tw-font-semibold tw-text-center">Decision: Terminate, Diagnosis: Panic Attack</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Counterfactual Version -->
+                <div class="tw-p-6 tw-bg-red-50 tw-shadow-lg tw-rounded-2xl tw-flex-1 tw-min-w-[300px] tw-max-w-md">
+                  <h3 class="tw-text-lg tw-font-semibold tw-text-red-700 tw-mb-4 tw-text-center">Counterfactual (Should NOT Terminate)</h3>
+                  <div class="tw-space-y-3">
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">Hi! What symptoms are you facing?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">Chest pain, trouble breathing, nausea, tingling.</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">What is your age and sex?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs">
+                        <p class="tw-text-gray-700 tw-text-sm">I am a 25-year-old woman.</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start">
+                      <div class="tw-bg-blue-100 tw-p-2 tw-rounded-lg tw-max-w-xs tw-opacity-50">
+                        <p class="tw-text-gray-700 tw-text-sm tw-italic">Do you have any family history of respiratory disease?</p>
+                      </div>
+                    </div>
+                    <div class="tw-flex tw-items-start tw-justify-end">
+                      <div class="tw-bg-green-100 tw-p-2 tw-rounded-lg tw-max-w-xs tw-opacity-50">
+                        <p class="tw-text-gray-700 tw-text-sm tw-italic">No, I don't have any family history of respiratory disease.</p>
+                      </div>
+                    </div>
+                    <div class="tw-bg-red-200 tw-p-2 tw-rounded-lg tw-mt-3">
+                      <p class="tw-text-gray-800 tw-text-xs tw-font-semibold tw-text-center">Decision: Continue</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="tw-text-sm tw-text-gray-500 tw-mt-4">
+                <b>Simplified counterfactual pair example.</b> The original trajectory (left) contains sufficient information to provide a diagnosis. The counterfactual (right, modified Q&A in gray) replaces this with a question that did not acquire the information needed to provide a diagnosis, making termination inappropriate.
+              </p>
+            </div>
+
+            <h3 class="title is-4">Component 2: Verbal Reasoning</h3>
+            <div class="content has-text-justified">
+              <p>
+                We augment each training example with explicit reasoning traces that explain why the current state warrants the termination decision. This reasoning serves as an implicit value function, helping the model predict whether to terminate or continue by reasoning about the implications before acting.
+              </p>
+              <div class="content has-text-justified tw-bg-blue-100 p-3 rounded-lg text-center mb-4">
+                <p><b>Example Reasoning Trace</b></p>
+                <p class="tw-text-left">&lt;think&gt; Based on the conversation so far, we have established that the patient is a 25-year-old woman experiencing chest pain, difficulty breathing, and feelings of panic. These symptoms, combined with the absence of cardiac risk factors and presence of acute anxiety, strongly suggest a panic attack rather than a cardiac event. We have sufficient information to make a confident diagnosis. &lt;/think&gt;</p>
+                <p class="tw-text-left"><b>Decision: Terminate</b></p>
+              </div>
+            </div>
+
+            <h3 class="title is-4">Training Objective</h3>
+            <div class="content has-text-justified">
+              <p>
+                We perform supervised fine-tuning (SFT) on counterfactual pairs with reasoning traces. This effectively optimizes for a policy that maximizes task reward while minimizing the number of information-seeking turns.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="section" id="results">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Results</h2>
+
+            <h3 class="title is-4">Medical Diagnosis</h3>
+            <div class="content has-text-justified">
+              <p>
+                CaRT outperforms both the base model and supervised fine-tuning baselines on medical diagnosis tasks. The model learns to terminate at optimal points, achieving higher success rates while asking fewer questions.
+              </p>
+              <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+                <img src="static/images/med_results.png" alt="Medical Diagnosis Results" width="80%" />
+              </div>
+              <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+                <img src="static/images/med_ood_results.png" alt="Medical Diagnosis Results" width="80%" />
+              </div>
+              <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4">
+                <b>CaRT performance on medical diagnosis.</b> (a) Results on holdout in-distribution data showing CaRT outperforms the base model and SFT baseline across all metrics. (b) CaRT maintains superior performance on out-of-distribution dermatology diagnosis tasks.
+              </p>
+            </div>
+
+            <h3 class="title is-4">Math Problem Solving</h3>
+            <div class="content has-text-justified">
+              <p>
+                In the math domain, CaRT achieves higher success rates while using fewer tokens compared to baseline approaches. The model learns when to stop reasoning and provide an answer, avoiding unnecessarily long thinking traces.
+              </p>
+              <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+                <img src="static/images/math_results.png" alt="Math Reasoning Results" width="80%" />
+              </div>
+              <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4">
+                <b>CaRT performance on AIME2025 math problems.</b> CaRT outperforms the base model and SFT baseline, achieving higher success rates with fewer output tokens.
+              </p>
+            </div>
+
+    
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ablation Studies -->
+    <section class="section" id="ablations">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-full-width">
+            <h2 class="title is-3">Ablation Studies</h2>
+
+            <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+              <img src="static/images/med_ablations.png" alt="Ablation Study Results" width="80%" />
+            </div>
+            <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4">
+              <b>Ablation study on medical diagnosis.</b> We ablate counterfactual training data and reasoning augmentation, showing that both components contribute to improved termination performance. Counterfactuals provide the largest gains.
+            </p>
+            <br />
+            <br />
+  
+            <div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+              <img src="static/images/term_trajs.png" alt="Termination Rate Curves" width="70%" />
+            </div>
+            <p class="tw-text-left tw-text-sm tw-text-gray-500 tw-mt-4">
+              <b>Analysis of model termination rates.</b> We find that base models maintain low rates regardless of context and the baseline SFT learns to increase termination rate as conversation length increases (top row). Adding counterfactuals enables the model to learn to terminate when sufficient information is gathered (middle row), and reasoning smooths these curves while maintaining information sensitivity (bottom row).
+            </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Findings -->
+    <section class="section hero is-light" id="key-findings">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Key Findings</h2>
+            <div class="content has-text-justified">
+              <ul>
+                <li>
+                  <strong>Counterfactual training examples with explicit reasoning help models learn good termination behavior:</strong> By training on counterfactual examples of termination with explicit reasoning, LLMs learn to recognize when they have acquired sufficient information to solve the task.
+                </li>
+                <li>
+                  <strong>The approach generalizes across domains:</strong> CaRT demonstrates strong performance across both medical diagnosis tasks and mathematical problem solving, achieving higher accuracy with fewer tokens and interactions. 
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BibTeX -->
+    <!-- <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <h2 class="title">BibTeX</h2>
+        <pre><code>
+@article{anonymous2026cart,
+  title={Teaching LLMs When to Stop Seeking and Start Acting},
+  author={Anonymous},
+  journal={Under review at ICLR 2026},
+  year={2026}
+}
+        </code></pre>
+      </div>
+    </section> -->
+
+    <footer class="footer">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-8">
+            <div class="content">
+              <p>
+                Corresponding author: Grace Liu (gliu2@andrew.cmu.edu)
+                <br />
+                
+                This page was built using the
+                <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">
+                  Academic Project Page Template
+                </a>
+                which was adopted from the 
+                <a href="https://nerfies.github.io" target="_blank">Nerfies</a>
+                project page.
+                <br />
+                This website is licensed under a
+                <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">
+                  Creative Commons Attribution-ShareAlike 4.0 International License
+                </a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
