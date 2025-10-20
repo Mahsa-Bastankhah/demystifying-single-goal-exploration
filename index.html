@@ -82,13 +82,13 @@
     }
     
     header { 
-      margin-top: 60px;  
-      padding: 40px 20px 30px; 
+      padding-top: 250px;  
+      padding-left: 20px;
+      padding-right: 20px;
+      padding-bottom: 30px;
       text-align: center; 
       background-color: #fff;
-    }
-    
-    .wrap { 
+    }    .wrap { 
       max-width: var(--w); 
       margin: 0 auto; 
       padding: 20px 20px; 
@@ -399,6 +399,7 @@ summary:hover {
   }
   
   header {
+    margin-top: 150px;
     padding: 30px 16px 20px;
   }
   
@@ -426,9 +427,9 @@ summary:hover {
   </div>
   
   <div class="buttons">
-    <a class="btn" href="paper.pdf">📄 Paper (PDF)</a>
-    <a class="btn" href="https://arxiv.org/abs/XXXX.XXXXX">🧮 arXiv</a>
-    <a class="btn" href="https://github.com/<you>/<repo>">💻 Code</a>
+    <a class="btn" href="https://arxiv.org/pdf/2510.14129">📄 Paper (PDF)</a>
+    <a class="btn" href="https://arxiv.org/abs/2510.14129">🧮 arXiv</a>
+    <a class="btn" href="https://github.com/Mahsa-Bastankhah/demystifying-single-goal-exploration-code">💻 Code</a>
     <a class="btn" href="#bibtex">📚 BibTeX</a>
   </div>
 </header>
@@ -439,33 +440,41 @@ summary:hover {
 <section class="light">
   <div class="wrap">
     <h2>Abstract</h2>
-    <p class="justified">
-      In this work, we take a first step toward elucidating the mechanisms behind emergent exploration in unsupervised reinforcement learning.  We study Single-Goal Contrastive Reinforcement Learning (SGCRL) <a href="https://openreview.net/pdf?id=xCkgX4Xfu0" class="cite" target="_blank">(Liu et al., 2025)</a>, a self-supervised algorithm capable of solving challenging long-horizon goal-reaching tasks without external rewards or curricula. We combine theoretical analysis of the algorithm's objective function with controlled experiments to understand what drives its exploration.
-      We show that SGCRL maximizes implicit rewards shaped by its learned representations. These representations automatically modify the reward landscape to promote exploration before reaching the goal and exploitation thereafter. Our experiments also demonstrate that these exploration dynamics arise from learning low-rank representations of the state space rather than from neural network function approximation. Our improved understanding enables us to adapt SGCRL to perform safety-aware exploration.
-    </p>
+    <ul style="text-align: left; margin: 0 auto; line-height: 1.7; font-size: 1rem;">
+      <li style="margin-bottom: 12px;">We take a first step toward elucidating the mechanisms behind emergent exploration in unsupervised reinforcement learning.</li>
+      <li style="margin-bottom: 12px;">We study Single-Goal Contrastive Reinforcement Learning (SGCRL) <a href="https://openreview.net/pdf?id=xCkgX4Xfu0" class="cite" target="_blank">(Liu et al., 2025)</a>, a self-supervised algorithm capable of solving challenging long-horizon goal-reaching tasks without external rewards or curricula.</li>
+      <li style="margin-bottom: 12px;">We combine theoretical analysis of the algorithm's objective function with controlled experiments to understand what drives its exploration.</li>
+      <li style="margin-bottom: 12px;">We show that SGCRL maximizes implicit rewards shaped by its learned representations, which automatically modify the reward landscape to promote exploration before reaching the goal and exploitation thereafter.</li>
+      <li style="margin-bottom: 12px;">Our experiments demonstrate that these exploration dynamics arise from learning low-rank representations of the state space rather than from neural network function approximation.</li>
+      <li>Our improved understanding enables us to adapt SGCRL to perform safety-aware exploration.</li>
+    </ul>
   </div>
-</section>
-
-<!-- Try It Out Section -->
-<section>
-  <div class="wrap" style="text-align: center;">
-    <p style="font-size: 1.1rem; max-width: 1200px; margin: 24px auto 28px; color: var(--secondary-color);">
-      Run our interactive notebook to visualize how representations drive SGCRL exploration in the Four Rooms environment.
+  <div class="hero" style="max-width: 800px; margin: 24px auto;">
+      <video controls>
+        <source src="assets/SGCRL-presentation-new -13x.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+   <div class="wrap" style="text-align: center; padding: 40px 20px 20px;">
+    <h2 style="font-size: 1.8rem; font-weight: 700; margin: 0 0 20px; background: linear-gradient(135deg, #906bff, #4ecdc4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      🚀 Try Our Interactive Demo!
+    </h2>
+    <p style="font-size: 1.3rem; margin: 20px auto 40px; color: var(--secondary-color); max-width: 800px; line-height: 1.6; font-weight: 500;">
+      Explore how SGCRL representations drive exploration in the Four Rooms environment with our hands-on notebook
     </p>
-    <a class="btn" href="https://colab.research.google.com/drive/1he9bV1Y5gI101KkRD8me6RxCSq_rZc8h?usp=sharing" target="_blank" style="font-size: 1.05rem; padding: 12px 24px; background-color: #fff; border-color: var(--border-color); color: var(--primary-color); font-weight: 500;">
-      <svg style="width: 18px; height: 18px; margin-right: 8px;" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm0 22C6.48 22 2 17.52 2 12S6.48 2 12 2s10 4.48 10 10-4.48 10-10 10z"/>
-        <circle cx="7" cy="12" r="1.5"/>
-        <circle cx="12" cy="12" r="1.5"/>
-        <circle cx="17" cy="12" r="1.5"/>
+    <a href="https://colab.research.google.com/drive/1he9bV1Y5gI101KkRD8me6RxCSq_rZc8h?usp=sharing" target="_blank" style="display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #ab6bff, #b08dca); color: white; padding: 18px 36px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 1.2rem; transition: all 0.3s ease; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4); transform: translateY(0); border: 3px solid rgba(255,255,255,0.2);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 12px 30px rgba(255, 107, 107, 0.5)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 8px 25px rgba(255, 107, 107, 0.4)'">
+      <svg style="width: 24px; height: 24px;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/>
       </svg>
-      Open in Google Colab
+      Open Interactive Notebook
     </a>
+    <p style="font-size: 0.9rem; color: #888; margin-top: 20px; font-style: italic;">
+      ✨ No setup required • Runs directly in your browser
+    </p>
   </div>
 </section>
-
 <!-- Main Content Section -->
-<section class="light">
+<section >
   <div class="wrap">
     <h2>Contrastive representations are essential for exploration!</h2>
 
@@ -498,33 +507,27 @@ summary:hover {
   </div>
 </div>
 
-    <h2>Single-goal exploration can solve long-horizon tasks without using neural networks!</h2>
-  </div>
 </section>
 
 <!-- BibTeX Section -->
 <section>
   <div class="wrap">
     <h2 id="bibtex">BibTeX</h2>
-    <details>
-      <summary>Show BibTeX</summary>
-      <pre class="codebox">@inproceedings{yourkey2025,
-  title={Your Paper Title},
-  author={Last, First and Last, Second and Last, You},
-  booktitle={Conference Name},
-  year={2025}
+    <pre class="codebox">@misc{bastankhah2025demystifyingmechanismsemergentexploration,
+      title={Demystifying the Mechanisms Behind Emergent Exploration in Goal-conditioned RL}, 
+      author={Mahsa Bastankhah and Grace Liu and Dilip Arumugam and Thomas L. Griffiths and Benjamin Eysenbach},
+      year={2025},
+      eprint={2510.14129},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2510.14129}, 
 }</pre>
-    </details>
   </div>
 </section>
 
 </main>
 
-<footer>
-  <div class="wrap">
-    © 2025 Your Name. Feel free to reuse this template; no attribution required.
-  </div>
-</footer>
+
 
 </body>
 </html>
