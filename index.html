@@ -307,6 +307,19 @@
   object-fit: cover;
 }
 
+    /* Ensure header/author links sit above anything else */
+header, .authors, .authors a, .buttons, .btn {
+  position: relative;
+  z-index: 10;
+}
+
+/* As a safety, make links clickable even if a parent has weird pointer-events */
+.authors a { pointer-events: auto; }
+
+/* If you later add any full-bleed hero/overlay, keep it *below* header */
+.hero, .media-row, section { position: relative; z-index: 0; }
+
+
 /* captions */
 .media-caption {
   font-size: 0.9rem;
